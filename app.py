@@ -1,5 +1,4 @@
 from flask import Flask
-
 from flask import render_template
 from flask import request
 
@@ -15,4 +14,4 @@ def alumnos():
 
 @app.route("/alumnos/guardar", methods=["POST"])
 def alumnosGuardar():
-    return f"Matrícula: {request.form["txtMatriculaFA"]} Nombre y Apellido: {request.form["txtNombreApellidoFA"]}"
+    return f"Matrícula: {request.form['txtMatriculaFA']} Nombre y Apellido: {request.form['txtNombreApellidoFA']}"
