@@ -1,17 +1,19 @@
 from flask import Flask
-from flask import render_template
-from flask import request
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 
-app = Flask(__name__)
+db = SQLAlchemy()
+migrate = Migrate()
 
-@app.route("/")
-def index():
-    return "<p>Hola Enrique!</p>"
+def create_app():
+    app = Flask(__name__)
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-@app.route("/alumnos")
-def alumnos():
-    return render_template("alumnos.html")
+    db.init_app(app)
+    migrate.init_app(app, db)
 
-@app.route("/alumnos/guardar", methods=["POST"])
-def alumnosGuardar():
-    return f"Matrícula: {request.form['txtMatriculaFA']} Nombre y Apellido: {request.form['txtNombreApellidoFA']}"
+    from .routes import main
+    app.register_blueprint(main)
+
+    return app
